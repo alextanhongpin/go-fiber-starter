@@ -4,11 +4,25 @@ import (
 	"fmt"
 
 	"github.com/gofiber/fiber"
+
+	"github.com/alextanhongpin/go-fiber/middleware"
 )
 
-func main() {
+func handler(c *fiber.Ctx) {
+	// fmt.Printf("hello world: %s", "hi")
+	c.JSON(fiber.Map{
+		"hello": "world",
+	})
+}
 
+func main() {
 	app := fiber.New()
+
+	middleware.Configure(app)
+
+	v1 := app.Group("/v1")
+	v1.Get("/list", handler)
+
 	// GET /john
 	app.Get("/:name", func(c *fiber.Ctx) {
 		fmt.Printf("hello %s!", c.Params("name"))
